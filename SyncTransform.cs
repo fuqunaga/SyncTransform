@@ -1,10 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿#define WORLD_MODE
+
+using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 
-namespace SyncTransformSystem {
-	[NetworkSettings(channel=Channels.DefaultUnreliable)]
+namespace SyncTransformSystem
+{
+    [NetworkSettings(channel=Channels.DefaultUnreliable)]
     public class SyncTransform : NetworkBehaviour {
 		public enum SyncModeEnum { ClientRPC = 0, SyncVars }
 		public const float EPSILON = 1e-5f;
@@ -107,10 +109,16 @@ namespace SyncTransformSystem {
 			public static TransformData Create(Transform transform, float time) {
 				return new TransformData () {
 					time = time,
-					position = transform.localPosition,
+#if WORLD_MODE
+                    position = transform.localPosition,
+                    rotation = transform.localRotation,
+                    scale = transform.lossyScale // send lossyScale, apply localScale
+#else
+                    position = transform.localPosition,
 					rotation = transform.localRotation,
 					scale = transform.localScale
-				};
+#endif
+                };
 			}
 
 			public void Load(Transform transform) {
@@ -130,10 +138,15 @@ namespace SyncTransformSystem {
 					Vector3.Lerp (d0.scale, d1.scale, t));
 			}
 			public static void Load(Transform transform, Vector3 position, Quaternion rotation, Vector3 scale) {
-				transform.localPosition = position;
+#if WORLD_MODE
+                transform.position = position;
+                transform.rotation = rotation;
+#else
+                transform.localPosition = position;
 				transform.localRotation = rotation;
-				transform.localScale = scale;
-			}
+#endif
+                transform.localScale = scale;
+            }
         }
     }
 }
