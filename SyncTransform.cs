@@ -110,8 +110,8 @@ namespace SyncTransformSystem
 				return new TransformData () {
 					time = time,
 #if WORLD_MODE
-                    position = transform.localPosition,
-                    rotation = transform.localRotation,
+                    position = transform.position,
+                    rotation = transform.rotation,
                     scale = transform.lossyScale // send lossyScale, apply localScale
 #else
                     position = transform.localPosition,
