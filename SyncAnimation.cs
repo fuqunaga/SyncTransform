@@ -4,6 +4,8 @@ using UnityEngine.Networking;
 using System.Collections.Generic;
 using System.Linq;
 
+#pragma warning disable 0618
+
 namespace SyncTransformSystem {	
 	[RequireComponent(typeof(Animator))]
 	[NetworkSettings(channel=1)]

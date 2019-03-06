@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 
+#pragma warning disable 0618
+
 namespace SyncTransformSystem
 {
     [NetworkSettings(channel=Channels.DefaultUnreliable)]
